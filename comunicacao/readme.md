@@ -20,4 +20,4 @@ Ao interconectar o VCC entre os arduinos, não ligue mais que um por vez ao USB
 
 principal para secundários:
 
-![](.\img\principal para secundários_bb.jpg)
+![](./img/principal_para_secundarios_bb.jpg)
