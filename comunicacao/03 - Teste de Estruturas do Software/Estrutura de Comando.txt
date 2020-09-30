@@ -28,3 +28,19 @@ D8 = Port Output 5
 D9 = Port Output 6
 D10 = Port Output 7
 D11 = Port Output 8
+
+
+----------------------
+
+
+Answer:
+
+Input Digital:
+/0D.X;
+
+Input Analogic:
+/0A.XXXX;
+
+X = Value
+
+
