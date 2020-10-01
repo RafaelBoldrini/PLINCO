@@ -1,3 +1,5 @@
+///*
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Comunicação entre um arduino principal
@@ -208,14 +210,43 @@ void loop()
       }
     }
   }
-
-//Campo de testes
-//Serial_Bus.println("teste");
-//delay(100);
-//Serial.println("teste");
-//char byteRec = Serial_Bus.read();
-//Serial_Read = Serial_Read + byteRec;
-//Serial.println(byteRec);
-//Serial.println(Serial_Read);
-
 } // loop()
+//*/
+
+
+///////////////////////////Campo de testes:
+
+/*
+
+#include <Arduino.h> // necessário para o platform.io
+#include <SoftwareSerial.h>
+
+SoftwareSerial Serial_Bus(2, 3); // software Serial no NANO: pinos 2 (RX) e 3 (TX)
+String Serial_Read = "";
+
+void setup()
+{
+  Serial_Bus.begin(9600); // hardware Serial_1 no MEGA: pinos 18 (TX1) e 19 (RX1)
+  Serial.begin(9600);
+} // setup()
+
+void loop()
+{
+  Serial_Bus.println("Teste");
+  delay(1000);
+  Serial.println("Enviado: Teste");
+  delay(1000);
+} // loop()
+
+void loop()
+{
+  while (Serial_Bus.available())
+  {
+    char byteRec = Serial_Bus.read();
+    Serial_Read = Serial_Read + byteRec;
+  }
+  Serial.println("Recebido: " + Serial_Read);
+  Serial_Read = "";
+} // loop()
+
+*/

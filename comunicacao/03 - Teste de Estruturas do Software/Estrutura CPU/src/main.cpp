@@ -1,3 +1,5 @@
+///*
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // Comunicação entre um arduino principal
@@ -95,7 +97,7 @@ void Timer_1(int Interval)
 
   if (Timer_1_Set == true)
   {
-    if ((currentMillis - Timer_1_Control) >= Interval)
+    if ((currentMillis - Timer_1_Control) > Interval)
     {
       Timer_1_Value = 0;
       Timer_1_Set = false;
@@ -133,7 +135,7 @@ void Process_1()
 
 void Inputs()
 {
-  Send_Command(2, 1, "IA");
+  Send_Command(1, 1, "IA");
   Potenciometro1 = Value;
 
   Send_Command(3, 1, "IA");
@@ -157,14 +159,43 @@ void loop()
 {
   Inputs();
   Outputs();
-
-//Campo de testes
-//Serial_1.println("Teste");
-//Serial.println("Teste");
-//delay(100);
-//char byteRec = Serial_1.read();
-//Serial_Read = Serial_Read + byteRec;
-//Serial.println(byteRec);
-//Serial.println(Serial_Read);
-
 } // loop()
+//*/
+
+
+///////////////////////////Campo de testes:
+
+/*
+
+#include <Arduino.h> // necessário para o platform.io
+#include <SoftwareSerial.h>
+
+SoftwareSerial Serial_1(2, 3); // software Serial no NANO: pinos 2 (RX) e 3 (TX)
+String Serial_Read = "";
+
+void setup()
+{
+  Serial_1.begin(9600); // hardware Serial_1 no MEGA: pinos 18 (TX1) e 19 (RX1)
+  Serial.begin(9600);
+} // setup()
+
+void loop()
+{
+  Serial_1.println("Teste");
+  delay(1000);
+  Serial.println("Enviado: Teste");
+  delay(1000);
+} // loop()
+
+void loop()
+{
+  while (Serial_1.available())
+  {
+    char byteRec = Serial_1.read();
+    Serial_Read = Serial_Read + byteRec;
+  }
+  Serial.println("Recebido: " + Serial_Read);
+  Serial_Read = "";
+} // loop()
+
+*/
