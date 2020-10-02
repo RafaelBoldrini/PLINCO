@@ -1,0 +1,45 @@
+Command:
+/M.P.TT;
+
+M = Module Number
+P = Port Number
+TT = Type Info
+
+Type Infos:
+ID = Input Digital
+IA = Input Analogic
+OH = Output High
+OL = Output Low
+
+Pinout:
+A0 = Port Input 1
+A1 = Port Input 2
+A2 = Port Input 3
+A3 = Port Input 4
+A4 = Port Input 5
+A5 = Port Input 6
+A6 = Port Input 7
+A7 = Port Input 8
+D4 = Port Output 1
+D5 = Port Output 2
+D6 = Port Output 3
+D7 = Port Output 4
+D8 = Port Output 5
+D9 = Port Output 6
+D10 = Port Output 7
+D11 = Port Output 8
+
+
+----------------------
+
+
+Answer:
+
+Input Digital:
+/0D.X;
+
+Input Analogic:
+/0A.XXXX;
+
+X = Value
+

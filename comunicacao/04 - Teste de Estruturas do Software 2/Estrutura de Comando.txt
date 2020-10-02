@@ -35,12 +35,13 @@ D11 = Port Output 8
 
 Answer:
 
-Input Digital:
-/0D.X;
+Input:
+/0I.XXXX;
 
-Input Analogic:
-/0A.XXXX;
+Output:
+/0O.XXXX;
 
 X = Value
+
 
 
