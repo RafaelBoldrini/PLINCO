@@ -11,7 +11,7 @@
 #include <Arduino.h> // necessário para o platform.io
 #include <Wire.h>
 
-int Module_Number = 1;   // id do servo
+int Module_Number = 3;   // id do servo
 String Serial_Read = ""; // commando recebido
 
 String Command_Type = "";
@@ -20,9 +20,29 @@ int Info = 0;
 String Info_Format = "";
 String Info_to_Send = "";
 
+bool Monitor_Program = false;
+bool Monitor_Protocol = false;
+
 ///////////////////////////////////////////////////////////////////////////////
 // funções devem ser declaradas antes de ser chamadas
 ///////////////////////////////////////////////////////////////////////////////
+
+void Monitor_Control()
+{
+  while (Serial.available())
+  {
+    char byteRec = Serial.read();
+
+    if (byteRec == 'p')
+    {
+      Monitor_Program = !Monitor_Program;
+    }
+    if (byteRec == 'P')
+    {
+      Monitor_Protocol = !Monitor_Protocol;
+    }
+  }
+}
 
 void ReceiveEvent(int howMany)
 {
@@ -151,8 +171,11 @@ void ReceiveEvent(int howMany)
     }
   }
 
-  Serial.print("Received: ");
-  Serial.println(Serial_Read);
+  if (Monitor_Protocol == true)
+  {
+    Serial.print("Received: ");
+    Serial.println(Serial_Read);
+  }
 }
 
 void RequestEvent()
@@ -184,8 +207,15 @@ void RequestEvent()
 
   Wire.write(Info_to_Send.c_str());
 
-  Serial.print("Sent: ");
-  Serial.println(Info_to_Send);
+  if (Monitor_Protocol == true)
+  {
+    Serial.print("Sent: ");
+    Serial.println(Info_to_Send);
+  }
+}
+
+void Program_Monitor()
+{
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -226,4 +256,5 @@ void setup()
 
 void loop()
 {
+  Program_Monitor();
 }
