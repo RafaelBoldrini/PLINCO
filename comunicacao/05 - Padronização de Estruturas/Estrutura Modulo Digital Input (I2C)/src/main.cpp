@@ -75,7 +75,7 @@ void ReceiveEvent(int howMany)
 
   if (Wire_Read.substring(0, 5) == "/GET.")
   {
-    if (Wire_Read.substring(5, 2) == String(Module_Number))
+    if (Wire_Read.substring(5, 6) == String(Module_Number))
     {
       if (Wire_Read.substring(6, 7) == ".")
       {
@@ -205,12 +205,14 @@ void setup()
   Wire.onRequest(RequestEvent);
   Serial.begin(9600);
 
-  pinMode(A0, INPUT);
-  pinMode(A1, INPUT);
-  pinMode(A2, INPUT);
-  pinMode(A3, INPUT);
-  pinMode(A6, INPUT);
-  pinMode(A7, INPUT);
+  pinMode(2, INPUT);
+  pinMode(3, INPUT);
+  pinMode(4, INPUT);
+  pinMode(5, INPUT);
+  pinMode(6, INPUT);
+  pinMode(7, INPUT);
+  pinMode(8, INPUT);
+  pinMode(9, INPUT);
 } // setup()
 
 void loop()

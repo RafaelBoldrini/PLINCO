@@ -1,0 +1,4 @@
+Foi usado um resistor de 10K na entrada dos 12V pois no lugar de um de 470, pois o de 470 estava esquentando muito. Isso não gerou problema de funcionamento.
+
+
+Para ligar um led com 12v foi usado dois resistores de 1k.

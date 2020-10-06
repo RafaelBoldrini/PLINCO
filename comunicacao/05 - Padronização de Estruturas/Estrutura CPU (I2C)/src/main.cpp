@@ -23,6 +23,7 @@ String Led_2 = "X";
 String Led_3 = "X";
 String Potenciometro_1 = "XXXX";
 String Potenciometro_2 = "XXXX";
+String Botao_1 = "XXXX";
 
 void Monitor_Control()
 {
@@ -195,6 +196,9 @@ void Information()
 
   GET(3, "02", Potenciometro_2);
   Potenciometro_2 = Memory_00;
+
+  // GET(3, "01", Botao_1);
+  // Botao_1 = Memory_00;
 }
 
 void Process()
@@ -237,14 +241,22 @@ void Process()
     Led_3 = Memory_00;
     Process_1_Control = 1;
   }
+
+
+  // String Led_1_Valor = Value_Format(Botao_1.toInt());
+  // SET(2, "03", Led_1_Valor, Led_1);
+  // Led_1 = Memory_00;
 }
 
 void Program_Monitor()
 {
   if (Monitor_Program == true)
   {
-    Serial.print("Potenciometro = ");
+    Serial.print("Potenciometro 1 = ");
     Serial.print(Potenciometro_1);
+    Serial.print("\t");
+    Serial.print("Potenciometro 2 = ");
+    Serial.print(Potenciometro_2);
     Serial.print("\t");
     Serial.print("Led 1 = ");
     Serial.print(Led_1);
@@ -255,6 +267,10 @@ void Program_Monitor()
     Serial.print("Led 3 = ");
     Serial.print(Led_3.toInt());
     Serial.println("");
+    
+    // Serial.print("Botao 1 = ");
+    // Serial.print(Botao_1.toInt());
+    // Serial.println("");
   }
 }
 
