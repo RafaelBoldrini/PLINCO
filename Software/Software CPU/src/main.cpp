@@ -205,6 +205,9 @@ void Process()
 {
   Timer_1(Potenciometro_1.toInt());
 
+  SET(4, "03", Potenciometro_1, Potenciometro_1);
+  SET(4, "04", Potenciometro_2, Potenciometro_2);
+
   String Led_1_Valor = Value_Format(Potenciometro_2.toInt() / 4);
   SET(1, "01", Led_1_Valor, Led_1);
   Led_1 = Memory_00;

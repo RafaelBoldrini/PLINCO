@@ -1,0 +1,1 @@
+Com um modulo dedicado para a comunicação ModbusIP, o arduino mega não fica sobrecarregado e consegue fazer com que a informação saia do modulo ModbusIP e chegue até um outro modulo, ou saia de um outro modulo e chegue até o modulo ModbusIP. Enquanto as informações são movimentadas pelo I2C o modulo ModbusIP troca informações com o Kepware.
