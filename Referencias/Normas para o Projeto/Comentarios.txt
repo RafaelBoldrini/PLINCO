@@ -1,0 +1,7 @@
+NR10 fala mais sobre o treinamento do operador quanto ao manuseio do equipamento, uso de EPIs e procedimentos de segurança que devem ser seguidos pela empresa.
+
+NR12 fala mais sobre a adequação do local onde o equipamento sera instalado, como por exemplo a necessidade de ser um ambiente com acesso restrito e identificado.
+
+NBR5410 fala mais sobre a adequação do equipamento a fim de garantir uma segurança em descargas eletricas e variações nas tenções/correntes.
+
+Não foi encontrado nada consistente sobre a IEC60439.
