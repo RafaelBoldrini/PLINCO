@@ -88,7 +88,7 @@ void loop(){
   if(CurrentMillis - PreviousMillis >= 
   IntervalMillis){
     PreviousMillis = CurrentMillis;
-    Timer_Data = Timer_Data + 1;
+    Timer_Data = Timer_Data + 2;
   }
   if(Info_Data == Reset_Timer){
     Timer_Data = 0;

@@ -1,0 +1,18 @@
+
+-------------------
+Command:
+/GET.N.MM:
+Answer:
+N.MM=XXXX;
+-------------------
+Command:
+/SET.N.MM=XXXX:
+Answer:
+N.MM.DONE;
+-------------------
+
+N = Module Number
+MM = Memory Number
+XXXX = Memory Value
+
+

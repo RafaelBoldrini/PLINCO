@@ -1,5 +1,0 @@
-A informação não transmite bem quando sai do TX do Arduino Nano para o RX do Arduino Mega.
-
-Quando ocorre o envio do programa para os Arduino atravez do USB, a comunicação falha, fazendo com que seja necessario segurar o botão de reset na hora de enviar um programa novo para os Arduinos.
-
-Para monitorar as informações que estão passando nos arduino foi usado o "Serial Monitor", porem foi identificado que executar comandos em um SoftwareSerial e em um "Serial Monitor" no mesmo programa, causa conflitos nas informações.

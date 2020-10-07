@@ -1,0 +1,1 @@
+Por se tratar de varios comando em sequencia, o arduino mega não da conta de processar tanta informação tão rapido como o esperado. Quando as informações são transmitidas pelo modbus, o programa entra em uma especie de "Delay" prejudicando a rotina do programa e causando erros de funcionamento.
