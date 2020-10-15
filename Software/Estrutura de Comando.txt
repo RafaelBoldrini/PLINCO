@@ -16,3 +16,24 @@ MM = Memory Number
 XXXX = Memory Value
 
 
+
+
+
+
+-------------------
+Command RS485:
+/.485.GET.N.MM:
+Answer RS485:
+.485.N.MM=XXXX;
+-------------------
+Command RS485:
+/.485.SET.N.MM=XXXX:
+Answer RS485:
+.485.N.MM.DONE;
+-------------------
+
+N = Module Number
+MM = Memory Number
+XXXX = Memory Value
+
+

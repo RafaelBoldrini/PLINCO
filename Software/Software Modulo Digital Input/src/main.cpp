@@ -62,110 +62,6 @@ void Monitor_Control()
   }
 }
 
-void ReceiveEvent(int howMany)
-{
-  String Wire_Read = "";
-  Correct_Command = false;
-
-  while (Wire.available())
-  {
-    char byteRec = Wire.read();
-    Wire_Read = Wire_Read + byteRec;
-  }
-
-  if (Wire_Read.substring(0, 5) == "/GET.")
-  {
-    if (Wire_Read.substring(5, 6) == String(Module_Number))
-    {
-      if (Wire_Read.substring(6, 7) == ".")
-      {
-        Memory_Number = Wire_Read.substring(7, 9);
-        if (Wire_Read.substring(9, 10) == ":")
-        {
-          if (Memory_Number == "01")
-          {
-            Correct_Command = true;
-            Memory_Value = Value_Format(digitalRead(2));
-            Memory_01 = Memory_Value;
-          }
-          if (Memory_Number == "02")
-          {
-            Correct_Command = true;
-            Memory_Value = Value_Format(digitalRead(3));
-            Memory_02 = Memory_Value;
-          }
-          if (Memory_Number == "03")
-          {
-            Correct_Command = true;
-            Memory_Value = Value_Format(digitalRead(4));
-            Memory_03 = Memory_Value;
-          }
-          if (Memory_Number == "04")
-          {
-            Correct_Command = true;
-            Memory_Value = Value_Format(digitalRead(5));
-            Memory_04 = Memory_Value;
-          }
-          if (Memory_Number == "05")
-          {
-            Correct_Command = true;
-            Memory_Value = Value_Format(digitalRead(6));
-            Memory_05 = Memory_Value;
-          }
-          if (Memory_Number == "06")
-          {
-            Correct_Command = true;
-            Memory_Value = Value_Format(digitalRead(7));
-            Memory_06 = Memory_Value;
-          }
-          if (Memory_Number == "07")
-          {
-            Correct_Command = true;
-            Memory_Value = Value_Format(digitalRead(8));
-            Memory_07 = Memory_Value;
-          }
-          if (Memory_Number == "08")
-          {
-            Correct_Command = true;
-            Memory_Value = Value_Format(digitalRead(9));
-            Memory_08 = Memory_Value;
-          }
-        }
-      }
-    }
-  }
-
-  if (Monitor_Protocol == true)
-  {
-    Serial.print("Received: ");
-    Serial.println(Wire_Read);
-  }
-}
-
-void RequestEvent()
-{
-  String Info_to_Send = "X.XX=XXXX;";
-
-  if (Correct_Command == false)
-  {
-    Info_to_Send = String(Module_Number) + "." + Memory_Number + "." + "XXXX" + ";";
-  }
-
-  if (Correct_Command == true)
-  {
-    Info_to_Send = String(Module_Number) + "." + Memory_Number + "." + Memory_Value + ";";
-    Correct_Command = false;
-  }
-
-  Wire.write(Info_to_Send.c_str());
-
-  if (Monitor_Protocol == true)
-  {
-    Serial.print("Sent: ");
-    Serial.println(Info_to_Send);
-  }
-}
-
 void Program_Monitor()
 {
   if (Monitor_Program == true)
@@ -198,11 +94,125 @@ void Program_Monitor()
   }
 }
 
+void Process()
+{
+  Memory_01 = Value_Format(digitalRead(2));
+  Memory_02 = Value_Format(digitalRead(3));
+  Memory_03 = Value_Format(digitalRead(4));
+  Memory_04 = Value_Format(digitalRead(5));
+  Memory_05 = Value_Format(digitalRead(6));
+  Memory_06 = Value_Format(digitalRead(7));
+  Memory_07 = Value_Format(digitalRead(8));
+  Memory_08 = Value_Format(digitalRead(9));
+}
+
+void Memorys_to_GET()
+{
+  if (Memory_Number == "01")
+  {
+    Correct_Command = true;
+    Memory_Value = Memory_01;
+  }
+  if (Memory_Number == "02")
+  {
+    Correct_Command = true;
+    Memory_Value = Memory_02;
+  }
+  if (Memory_Number == "03")
+  {
+    Correct_Command = true;
+    Memory_Value = Memory_03;
+  }
+  if (Memory_Number == "04")
+  {
+    Correct_Command = true;
+    Memory_Value = Memory_04;
+  }
+  if (Memory_Number == "05")
+  {
+    Correct_Command = true;
+    Memory_Value = Memory_05;
+  }
+  if (Memory_Number == "06")
+  {
+    Correct_Command = true;
+    Memory_Value = Memory_06;
+  }
+  if (Memory_Number == "07")
+  {
+    Correct_Command = true;
+    Memory_Value = Memory_07;
+  }
+  if (Memory_Number == "08")
+  {
+    Correct_Command = true;
+    Memory_Value = Memory_08;
+  }
+}
+
+void ReceiveEvent(int howMany)
+{
+  String Wire_Read = "";
+  Correct_Command = false;
+
+  while (Wire.available())
+  {
+    char byteRec = Wire.read();
+    Wire_Read = Wire_Read + byteRec;
+  }
+
+  if (Wire_Read.substring(0, 5) == "/GET.")
+  {
+    if (Wire_Read.substring(5, 6) == String(Module_Number))
+    {
+      if (Wire_Read.substring(6, 7) == ".")
+      {
+        Memory_Number = Wire_Read.substring(7, 9);
+        if (Wire_Read.substring(9, 10) == ":")
+        {
+          Memorys_to_GET();
+        }
+      }
+    }
+  }
+
+  if (Monitor_Protocol == true)
+  {
+    Serial.print("Received: ");
+    Serial.println(Wire_Read);
+  }
+}
+
+void RequestEvent()
+{
+  String Info_to_Send = "X.XX=XXXX;";
+
+  if (Correct_Command == false)
+  {
+    Info_to_Send = String(Module_Number) + "." + Memory_Number + "=" + "XXXX" + ";";
+  }
+
+  if (Correct_Command == true)
+  {
+    Info_to_Send = String(Module_Number) + "." + Memory_Number + "=" + Memory_Value + ";";
+    Correct_Command = false;
+  }
+
+  Wire.write(Info_to_Send.c_str());
+
+  if (Monitor_Protocol == true)
+  {
+    Serial.print("Sent: ");
+    Serial.println(Info_to_Send);
+  }
+}
+
 void setup()
 {
   Wire.begin(Module_Number);
   Wire.onReceive(ReceiveEvent);
   Wire.onRequest(RequestEvent);
+
   Serial.begin(9600);
 
   pinMode(2, INPUT);
@@ -219,4 +229,5 @@ void loop()
 {
   Monitor_Control();
   Program_Monitor();
+  Process();
 }

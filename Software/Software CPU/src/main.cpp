@@ -1,29 +1,28 @@
 ////////////////////////////////////////////////////////////////////////
 //
 //   ArduinoPLC - CPU
-//   Software for Arduino MEGA
+//   Software for Arduino UNO
 //
 ////////////////////////////////////////////////////////////////////////
 
 #include <Arduino.h> // necessário para o platform.io
 #include <Wire.h>
 
+String Memory_00 = "0000";
+
 bool Monitor_Program = false;
 bool Monitor_Protocol = false;
-
-String Memory_00 = "0000";
 
 unsigned long Timer_1_Control = 0;
 int Timer_1_Value = 0;
 
 int Process_1_Control = 0;
 
-String Led_1 = "XXXX";
+String Led_1 = "X";
 String Led_2 = "X";
-String Led_3 = "X";
 String Potenciometro_1 = "XXXX";
 String Potenciometro_2 = "XXXX";
-String Botao_1 = "XXXX";
+String Sensor_Distancia_1 = "XXXX";
 
 String Value_Format(int Value)
 {
@@ -91,7 +90,7 @@ void GET(int Module_Number, String Memory_Number, String Reference)
     {
       if (Wire_Read.substring(2, 4) == Memory_Number)
       {
-        if (Wire_Read.substring(4, 5) == ".")
+        if (Wire_Read.substring(4, 5) == "=")
         {
           if (Wire_Read.substring(9, 10) == ";")
           {
@@ -191,14 +190,14 @@ void Timer_1(unsigned long Interval)
 
 void Information()
 {
-  GET(3, "01", Potenciometro_1);
-  Potenciometro_1 = Memory_00;
+  //GET(3, "01", Potenciometro_1);
+  //Potenciometro_1 = Memory_00;
 
-  GET(3, "02", Potenciometro_2);
-  Potenciometro_2 = Memory_00;
+  //GET(3, "02", Potenciometro_2);
+  //Potenciometro_2 = Memory_00;
 
-  // GET(3, "01", Botao_1);
-  // Botao_1 = Memory_00;
+  GET(1, "01", Sensor_Distancia_1);
+  Sensor_Distancia_1 = Memory_00;
 }
 
 void Process()
@@ -208,10 +207,6 @@ void Process()
   SET(4, "03", Potenciometro_1, Potenciometro_1);
   SET(4, "04", Potenciometro_2, Potenciometro_2);
 
-  String Led_1_Valor = Value_Format(Potenciometro_2.toInt() / 4);
-  SET(1, "01", Led_1_Valor, Led_1);
-  Led_1 = Memory_00;
-
   if (Process_1_Control == 0)
   {
     Process_1_Control = 1;
@@ -219,36 +214,31 @@ void Process()
 
   if (Process_1_Control == 1)
   {
-    SET(2, "01", "0001", Led_2);
-    Led_2 = Memory_00;
+    SET(2, "01", "0001", Led_1);
+    Led_1 = Memory_00;
     Process_1_Control = 2;
     Timer_1_Set();
   }
   if (Process_1_Control == 2 && Timer_1_Value == 0)
   {
-    SET(2, "01", "0000", Led_2);
-    Led_2 = Memory_00;
+    SET(2, "01", "0000", Led_1);
+    Led_1 = Memory_00;
     Process_1_Control = 3;
   }
 
   if (Process_1_Control == 3)
   {
-    SET(2, "02", "0001", Led_3);
-    Led_3 = Memory_00;
+    SET(2, "02", "0001", Led_2);
+    Led_2 = Memory_00;
     Process_1_Control = 4;
     Timer_1_Set();
   }
   if (Process_1_Control == 4 && Timer_1_Value == 0)
   {
-    SET(2, "02", "0000", Led_3);
-    Led_3 = Memory_00;
+    SET(2, "02", "0000", Led_2);
+    Led_2 = Memory_00;
     Process_1_Control = 1;
   }
-
-
-  // String Led_1_Valor = Value_Format(Botao_1.toInt());
-  // SET(2, "03", Led_1_Valor, Led_1);
-  // Led_1 = Memory_00;
 }
 
 void Program_Monitor()
@@ -257,23 +247,19 @@ void Program_Monitor()
   {
     Serial.print("Potenciometro 1 = ");
     Serial.print(Potenciometro_1);
-    Serial.print("\t");
+    Serial.print("  ");
     Serial.print("Potenciometro 2 = ");
     Serial.print(Potenciometro_2);
-    Serial.print("\t");
+    Serial.print("  ");
     Serial.print("Led 1 = ");
-    Serial.print(Led_1);
-    Serial.print("\t");
+    Serial.print(Led_1.toInt());
+    Serial.print("  ");
     Serial.print("Led 2 = ");
     Serial.print(Led_2.toInt());
-    Serial.print("\t");
-    Serial.print("Led 3 = ");
-    Serial.print(Led_3.toInt());
+    Serial.print("  ");
+    Serial.print("Sensor 1 = ");
+    Serial.print(Sensor_Distancia_1);
     Serial.println("");
-    
-    // Serial.print("Botao 1 = ");
-    // Serial.print(Botao_1.toInt());
-    // Serial.println("");
   }
 }
 
@@ -286,7 +272,7 @@ void setup()
 void loop()
 {
   Monitor_Control();
-  Information();
+  //Information();
   Process();
   Program_Monitor();
 } // loop()

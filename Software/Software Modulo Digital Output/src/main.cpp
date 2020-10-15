@@ -62,6 +62,94 @@ void Monitor_Control()
   }
 }
 
+void Program_Monitor()
+{
+  if (Monitor_Program == true)
+  {
+    Serial.print("M_01 = ");
+    Serial.print(Memory_01.toInt());
+    Serial.print("  ");
+    Serial.print("M_02 = ");
+    Serial.print(Memory_02.toInt());
+    Serial.print("  ");
+    Serial.print("M_03 = ");
+    Serial.print(Memory_03.toInt());
+    Serial.print("  ");
+    Serial.print("M_04 = ");
+    Serial.print(Memory_04.toInt());
+    Serial.print("  ");
+    Serial.print("M_05 = ");
+    Serial.print(Memory_05.toInt());
+    Serial.print("  ");
+    Serial.print("M_06 = ");
+    Serial.print(Memory_06.toInt());
+    Serial.print("  ");
+    Serial.print("M_07 = ");
+    Serial.print(Memory_07.toInt());
+    Serial.print("  ");
+    Serial.print("M_08 = ");
+    Serial.print(Memory_08.toInt());
+    Serial.print("  ");
+    Serial.println("");
+  }
+}
+
+void Process()
+{
+  digitalWrite(2, Memory_01.toInt());
+  digitalWrite(3, Memory_02.toInt());
+  digitalWrite(4, Memory_03.toInt());
+  digitalWrite(5, Memory_04.toInt());
+  digitalWrite(6, Memory_05.toInt());
+  digitalWrite(7, Memory_06.toInt());
+  digitalWrite(8, Memory_07.toInt());
+  digitalWrite(9, Memory_08.toInt());
+}
+
+void Memorys_to_SET()
+{
+  if (Memory_Number == "01" && Memory_Value.toInt() <= 1)
+  {
+    Correct_Command = true;
+    Memory_01 = Memory_Value;
+  }
+  if (Memory_Number == "02" && Memory_Value.toInt() <= 1)
+  {
+    Correct_Command = true;
+    Memory_02 = Memory_Value;
+  }
+  if (Memory_Number == "03" && Memory_Value.toInt() <= 1)
+  {
+    Correct_Command = true;
+    Memory_03 = Memory_Value;
+  }
+  if (Memory_Number == "04" && Memory_Value.toInt() <= 1)
+  {
+    Correct_Command = true;
+    Memory_04 = Memory_Value;
+  }
+  if (Memory_Number == "05" && Memory_Value.toInt() <= 1)
+  {
+    Correct_Command = true;
+    Memory_05 = Memory_Value;
+  }
+  if (Memory_Number == "06" && Memory_Value.toInt() <= 1)
+  {
+    Correct_Command = true;
+    Memory_06 = Memory_Value;
+  }
+  if (Memory_Number == "07" && Memory_Value.toInt() <= 1)
+  {
+    Correct_Command = true;
+    Memory_07 = Memory_Value;
+  }
+  if (Memory_Number == "08" && Memory_Value.toInt() <= 1)
+  {
+    Correct_Command = true;
+    Memory_08 = Memory_Value;
+  }
+}
+
 void ReceiveEvent(int howMany)
 {
   String Wire_Read = "";
@@ -85,54 +173,7 @@ void ReceiveEvent(int howMany)
           Memory_Value = Wire_Read.substring(10, 14);
           if (Wire_Read.substring(14, 15) == ":")
           {
-            if (Memory_Number == "01" && Memory_Value.toInt() <= 1)
-            {
-              Correct_Command = true;
-              digitalWrite(2, Memory_Value.toInt());
-              Memory_01 = Memory_Value;
-            }
-            if (Memory_Number == "02" && Memory_Value.toInt() <= 1)
-            {
-              Correct_Command = true;
-              digitalWrite(3, Memory_Value.toInt());
-              Memory_02 = Memory_Value;
-            }
-            if (Memory_Number == "03" && Memory_Value.toInt() <= 1)
-            {
-              Correct_Command = true;
-              digitalWrite(4, Memory_Value.toInt());
-              Memory_03 = Memory_Value;
-            }
-            if (Memory_Number == "04" && Memory_Value.toInt() <= 1)
-            {
-              Correct_Command = true;
-              digitalWrite(5, Memory_Value.toInt());
-              Memory_04 = Memory_Value;
-            }
-            if (Memory_Number == "05" && Memory_Value.toInt() <= 1)
-            {
-              Correct_Command = true;
-              digitalWrite(6, Memory_Value.toInt());
-              Memory_05 = Memory_Value;
-            }
-            if (Memory_Number == "06" && Memory_Value.toInt() <= 1)
-            {
-              Correct_Command = true;
-              digitalWrite(7, Memory_Value.toInt());
-              Memory_06 = Memory_Value;
-            }
-            if (Memory_Number == "07" && Memory_Value.toInt() <= 1)
-            {
-              Correct_Command = true;
-              digitalWrite(8, Memory_Value.toInt());
-              Memory_07 = Memory_Value;
-            }
-            if (Memory_Number == "08" && Memory_Value.toInt() <= 1)
-            {
-              Correct_Command = true;
-              digitalWrite(9, Memory_Value.toInt());
-              Memory_08 = Memory_Value;
-            }
+            Memorys_to_SET();
           }
         }
       }
@@ -170,43 +211,12 @@ void RequestEvent()
   }
 }
 
-void Program_Monitor()
-{
-  if (Monitor_Program == true)
-  {
-    Serial.print("M_01 = ");
-    Serial.print(Memory_01.toInt());
-    Serial.print("  ");
-    Serial.print("M_02 = ");
-    Serial.print(Memory_02.toInt());
-    Serial.print("  ");
-    Serial.print("M_03 = ");
-    Serial.print(Memory_03.toInt());
-    Serial.print("  ");
-    Serial.print("M_04 = ");
-    Serial.print(Memory_04.toInt());
-    Serial.print("  ");
-    Serial.print("M_05 = ");
-    Serial.print(Memory_05.toInt());
-    Serial.print("  ");
-    Serial.print("M_06 = ");
-    Serial.print(Memory_06.toInt());
-    Serial.print("  ");
-    Serial.print("M_07 = ");
-    Serial.print(Memory_07.toInt());
-    Serial.print("  ");
-    Serial.print("M_08 = ");
-    Serial.print(Memory_08.toInt());
-    Serial.print("  ");
-    Serial.println("");
-  }
-}
-
 void setup()
 {
   Wire.begin(Module_Number);
   Wire.onReceive(ReceiveEvent);
   Wire.onRequest(RequestEvent);
+
   Serial.begin(9600);
 
   pinMode(2, OUTPUT);
@@ -231,4 +241,5 @@ void loop()
 {
   Monitor_Control();
   Program_Monitor();
+  Process();
 }
