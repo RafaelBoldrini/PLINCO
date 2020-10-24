@@ -1,0 +1,1 @@
+Quando o Modulo RS485 recebe um comando pelo I2C, o programa interrompe o Loop(). Isso pode fazer com que o programa trave se tiver algo que ofereça possibilidade de conflito, como por exemplo o Serial.print(). Sendo assim o Modulo RS485 e a CPU tem que ser 1 coisa só.

@@ -278,52 +278,58 @@ void Process()
   GET(3, "02", Potenciometro_2);
   Potenciometro_2 = Memory_00;
 
+  GET(1, "01", Led_3);
+  Led_3 = Memory_00;
+
   SET(4, "03", Potenciometro_1, Potenciometro_1);
   SET(4, "04", Potenciometro_2, Potenciometro_2);
 
+  if (Process_1_Control == 0)
+  {
+    Process_1_Control = 1;
+  }
   if (Potenciometro_1.toInt() >= 1000)
   {
     SET(2, "01", "0000", Led_1);
     Led_1 = Memory_00;
     SET(2, "02", "0000", Led_2);
     Led_2 = Memory_00;
-    RS485_Write(1, "01", "0000");
-    Led_3 = "0000";
-    Process_1_Control = 0;
+    SET(1, "02", "0000", Led_3);
+    Led_3 = Memory_00;
+    //RS485_Write(1, "01", "0000");
   }
   if (Potenciometro_1.toInt() < 1000)
   {
-    if (Process_1_Control == 0 && Timer_1_Value == 0)
-    {
-      Process_1_Control = 1;
-      Timer_1_Set();
-    }
-    if (Process_1_Control == 1 && Timer_1_Value == 1)
+    if (Process_1_Control == 1)
     {
       SET(2, "01", "0001", Led_1);
       Led_1 = Memory_00;
-      SET(2, "02", "0000", Led_2);
-      Led_2 = Memory_00;
-      RS485_Write(1, "01", "0001");
-      Led_3 = "0001";
-    }
-    if (Process_1_Control == 1 && Timer_1_Value == 0)
-    {
+      SET(1, "02", "0001", Led_3);
+      Led_3 = Memory_00;
       Process_1_Control = 2;
       Timer_1_Set();
     }
-    if (Process_1_Control == 2 && Timer_1_Value == 1)
+    if (Process_1_Control == 2 && Timer_1_Value == 0)
     {
       SET(2, "01", "0000", Led_1);
       Led_1 = Memory_00;
+      SET(1, "02", "0000", Led_3);
+      Led_3 = Memory_00;
+      Process_1_Control = 3;
+    }
+
+    if (Process_1_Control == 3)
+    {
       SET(2, "02", "0001", Led_2);
       Led_2 = Memory_00;
-      RS485_Write(1, "01", "0000");
-      Led_3 = "0000";
+      Process_1_Control = 4;
+      Timer_1_Set();
     }
-    if (Process_1_Control == 2 && Timer_1_Value == 0)
+    if (Process_1_Control == 4 && Timer_1_Value == 0)
     {
-      Process_1_Control = 0;
+      SET(2, "02", "0000", Led_2);
+      Led_2 = Memory_00;
+      Process_1_Control = 1;
     }
   }
 }
@@ -368,5 +374,5 @@ void loop()
   Monitor_Control();
   Program_Monitor();
   Process();
-  RS485_Read();
+  //RS485_Read();
 } // loop()

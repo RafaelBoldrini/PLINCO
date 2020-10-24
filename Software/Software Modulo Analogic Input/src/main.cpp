@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////
 
-int Module_Number = 1; // Replace with the ID of Module
+int Module_Number = 3; // Replace with the ID of Module
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -17,12 +17,15 @@ bool Correct_Command = false;
 String Memory_Number = "XX";
 String Memory_Value = "XXXX";
 
-String Memory_01 = "0000";
-String Memory_02 = "0000";
-String Memory_03 = "0000";
-String Memory_04 = "0000";
-String Memory_05 = "0000";
-String Memory_06 = "0000";
+unsigned long Timer_1_Control = 0;
+int Timer_1_Value = 0;
+
+String Memory_01 = "XXXX";
+String Memory_02 = "XXXX";
+String Memory_03 = "XXXX";
+String Memory_04 = "XXXX";
+String Memory_05 = "XXXX";
+String Memory_06 = "XXXX";
 
 String Value_Format(int Value)
 {
@@ -60,72 +63,42 @@ void Monitor_Control()
   }
 }
 
-void Program_Monitor()
-{
-  if (Monitor_Program == true)
-  {
-    Serial.print("M_01 = ");
-    Serial.print(Memory_01);
-    Serial.print("  ");
-    Serial.print("M_02 = ");
-    Serial.print(Memory_02);
-    Serial.print("  ");
-    Serial.print("M_03 = ");
-    Serial.print(Memory_03);
-    Serial.print("  ");
-    Serial.print("M_04 = ");
-    Serial.print(Memory_04);
-    Serial.print("  ");
-    Serial.print("M_05 = ");
-    Serial.print(Memory_05);
-    Serial.print("  ");
-    Serial.print("M_06 = ");
-    Serial.print(Memory_06);
-    Serial.print("  ");
-    Serial.println("");
-  }
-}
-
-void Process()
-{
-  Memory_01 = Value_Format(analogRead(A0));
-  Memory_02 = Value_Format(analogRead(A1));
-  Memory_03 = Value_Format(analogRead(A2));
-  Memory_04 = Value_Format(analogRead(A3));
-  Memory_05 = Value_Format(analogRead(A6));
-  Memory_06 = Value_Format(analogRead(A7));
-}
-
 void Memorys_to_GET()
 {
   if (Memory_Number == "01")
   {
     Correct_Command = true;
+    Memory_01 = Value_Format(analogRead(A0));
     Memory_Value = Memory_01;
   }
   if (Memory_Number == "02")
   {
     Correct_Command = true;
+    Memory_02 = Value_Format(analogRead(A1));
     Memory_Value = Memory_02;
   }
   if (Memory_Number == "03")
   {
     Correct_Command = true;
+    Memory_03 = Value_Format(analogRead(A2));
     Memory_Value = Memory_03;
   }
   if (Memory_Number == "04")
   {
     Correct_Command = true;
+    Memory_04 = Value_Format(analogRead(A3));
     Memory_Value = Memory_04;
   }
   if (Memory_Number == "05")
   {
     Correct_Command = true;
+    Memory_05 = Value_Format(analogRead(A6));
     Memory_Value = Memory_05;
   }
   if (Memory_Number == "06")
   {
     Correct_Command = true;
+    Memory_06 = Value_Format(analogRead(A7));
     Memory_Value = Memory_06;
   }
 }
@@ -187,6 +160,62 @@ void RequestEvent()
   }
 }
 
+void Timer_1_Set()
+{
+  unsigned long currentMillis = millis();
+  Timer_1_Control = currentMillis;
+  Timer_1_Value = 1;
+}
+
+void Timer_1(unsigned long Interval)
+{
+  unsigned long currentMillis = millis();
+  unsigned long Timer_Comparation = currentMillis - Timer_1_Control;
+  if (Timer_Comparation > Interval)
+  {
+    Timer_1_Value = 0;
+  }
+}
+
+void Program_Monitor()
+{
+  if (Monitor_Program == true)
+  {
+    Timer_1(1000);
+    if (Timer_1_Value == 0)
+    {
+      Memory_01 = Value_Format(analogRead(A0));
+      Memory_02 = Value_Format(analogRead(A1));
+      Memory_03 = Value_Format(analogRead(A2));
+      Memory_04 = Value_Format(analogRead(A3));
+      Memory_05 = Value_Format(analogRead(A6));
+      Memory_06 = Value_Format(analogRead(A7));
+
+      Timer_1_Set();
+    }
+
+    Serial.print("M_01 = ");
+    Serial.print(Memory_01);
+    Serial.print("  ");
+    Serial.print("M_02 = ");
+    Serial.print(Memory_02);
+    Serial.print("  ");
+    Serial.print("M_03 = ");
+    Serial.print(Memory_03);
+    Serial.print("  ");
+    Serial.print("M_04 = ");
+    Serial.print(Memory_04);
+    Serial.print("  ");
+    Serial.print("M_05 = ");
+    Serial.print(Memory_05);
+    Serial.print("  ");
+    Serial.print("M_06 = ");
+    Serial.print(Memory_06);
+    Serial.print("  ");
+    Serial.println("");
+  }
+}
+
 void setup()
 {
   Wire.begin(Module_Number);
@@ -207,5 +236,4 @@ void loop()
 {
   Monitor_Control();
   Program_Monitor();
-  Process();
-}
+} // loop()

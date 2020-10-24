@@ -33,10 +33,10 @@ String Command_Type = "/XXX.";
 String Memory_Number = "XX";
 String Memory_Value = "XXXX";
 
-String Memory_01 = "0000";
-String Memory_02 = "0000";
-String Memory_03 = "0000";
-String Memory_04 = "0000";
+String Memory_01 = "XXXX";
+String Memory_02 = "XXXX";
+String Memory_03 = "XXXX";
+String Memory_04 = "XXXX";
 
 String Value_Format(int Value)
 {
@@ -74,6 +74,25 @@ void Monitor_Control()
   }
 }
 
+void Program_Monitor()
+{
+  if (Monitor_Program == true)
+  {
+    Serial.print("M_01 = ");
+    Serial.print(Memory_01);
+    Serial.print("  ");
+    Serial.print("M_02 = ");
+    Serial.print(Memory_02);
+    Serial.print("  ");
+    Serial.print("M_03 = ");
+    Serial.print(Memory_03);
+    Serial.print("  ");
+    Serial.print("M_04 = ");
+    Serial.print(Memory_04);
+    Serial.println("");
+  }
+}
+
 void Modbus_IP_Config()
 {
   // Add Registers to Receive Data
@@ -91,6 +110,38 @@ void Send_to_ModbusIP()
   Modbus_IP.Ireg(Memory_04_Modbus_IP_Offset, Memory_04.toInt());
 }
 
+void Memorys_to_GET()
+{
+  /*
+  if (Memory_Number == "01")
+  {
+    Correct_Command = true;
+    Memory_Value = ...;
+    Memory_01 = Memory_Value;
+  }
+  if (Memory_Number == "02")
+  {
+    Correct_Command = true;
+    Memory_Value = ...;
+    Memory_02 = Memory_Value;
+  }
+  */
+}
+
+void Memorys_to_SET()
+{
+  if (Memory_Number == "03" && Memory_Value.toInt() <= 9999)
+  {
+    Correct_Command = true;
+    Memory_03 = Memory_Value;
+  }
+  if (Memory_Number == "04" && Memory_Value.toInt() <= 9999)
+  {
+    Correct_Command = true;
+    Memory_04 = Memory_Value;
+  }
+}
+
 void ReceiveEvent(int howMany)
 {
   String Wire_Read = "";
@@ -102,7 +153,6 @@ void ReceiveEvent(int howMany)
     Wire_Read = Wire_Read + byteRec;
   }
 
-/*
   if (Wire_Read.substring(0, 5) == "/GET.")
   {
     if (Wire_Read.substring(5, 6) == String(Module_Number))
@@ -112,23 +162,11 @@ void ReceiveEvent(int howMany)
         Memory_Number = Wire_Read.substring(7, 9);
         if (Wire_Read.substring(9, 10) == ":")
         {
-          if (Memory_Number == "01")
-          {
-            Correct_Command = true;
-            Memory_Value = ...;
-            Memory_01 = Memory_Value;
-          }
-          if (Memory_Number == "02")
-          {
-            Correct_Command = true;
-            Memory_Value = ...;
-            Memory_02 = Memory_Value;
-          }
+          Memorys_to_GET();
         }
       }
     }
   }
-  */
 
   if (Wire_Read.substring(0, 5) == "/SET.")
   {
@@ -142,16 +180,7 @@ void ReceiveEvent(int howMany)
           Memory_Value = Wire_Read.substring(10, 14);
           if (Wire_Read.substring(14, 15) == ":")
           {
-            if (Memory_Number == "03" && Memory_Value.toInt() <= 9999)
-            {
-              Correct_Command = true;
-              Memory_03 = Memory_Value;
-            }
-            if (Memory_Number == "04" && Memory_Value.toInt() <= 9999)
-            {
-              Correct_Command = true;
-              Memory_04 = Memory_Value;
-            }
+            Memorys_to_SET();
           }
         }
       }
@@ -203,42 +232,22 @@ void RequestEvent()
   }
 }
 
-void Program_Monitor() 
-{
-  if (Monitor_Program == true)
-  {
-    Serial.print("M_01 = ");
-    Serial.print(Memory_01);
-    Serial.print("  ");
-    Serial.print("M_02 = ");
-    Serial.print(Memory_02);
-    Serial.print("  ");
-    Serial.print("M_03 = ");
-    Serial.print(Memory_03);
-    Serial.print("  ");
-    Serial.print("M_04 = ");
-    Serial.print(Memory_04);
-    Serial.println("");
-  }
-}
-
 void setup()
 {
-  Modbus_IP.config(mac, ip);
-  Modbus_IP_Config();
-
   Wire.begin(Module_Number);
   Wire.onReceive(ReceiveEvent);
   Wire.onRequest(RequestEvent);
-  
+
   Serial.begin(9600);
+
+  Modbus_IP.config(mac, ip);
+  Modbus_IP_Config();
 } // setup()
 
 void loop()
 {
-  Modbus_IP.task();
-  Send_to_ModbusIP();
-
   Monitor_Control();
   Program_Monitor();
+  Send_to_ModbusIP();
+  Modbus_IP.task();
 } // loop()

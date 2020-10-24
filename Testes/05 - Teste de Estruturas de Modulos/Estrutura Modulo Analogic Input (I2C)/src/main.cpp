@@ -5,7 +5,7 @@
 //
 ////////////////////////////////////////////////////////////////////////
 
-int Module_Number = 1; // Replace with the ID of Module
+int Module_Number = 3; // Replace with the ID of Module
 
 #include <Arduino.h>
 #include <Wire.h>

@@ -17,31 +17,12 @@ bool Correct_Command = false;
 String Memory_Number = "XX";
 String Memory_Value = "XXXX";
 
-String Memory_01 = "0000";
-String Memory_02 = "0000";
-String Memory_03 = "0000";
-String Memory_04 = "0000";
-String Memory_05 = "0000";
-String Memory_06 = "0000";
-
-String Value_Format(int Value)
-{
-  String Value_Formated = String(Value);
-
-  if (Value < 1000)
-  {
-    Value_Formated = "0" + Value_Formated;
-  }
-  if (Value < 100)
-  {
-    Value_Formated = "0" + Value_Formated;
-  }
-  if (Value < 10)
-  {
-    Value_Formated = "0" + Value_Formated;
-  }
-  return Value_Formated;
-}
+String Memory_01 = "XXXX";
+String Memory_02 = "XXXX";
+String Memory_03 = "XXXX";
+String Memory_04 = "XXXX";
+String Memory_05 = "XXXX";
+String Memory_06 = "XXXX";
 
 void Monitor_Control()
 {
@@ -60,73 +41,43 @@ void Monitor_Control()
   }
 }
 
-void Program_Monitor()
-{
-  if (Monitor_Program == true)
-  {
-    Serial.print("M_01 = ");
-    Serial.print(Memory_01);
-    Serial.print("  ");
-    Serial.print("M_02 = ");
-    Serial.print(Memory_02);
-    Serial.print("  ");
-    Serial.print("M_03 = ");
-    Serial.print(Memory_03);
-    Serial.print("  ");
-    Serial.print("M_04 = ");
-    Serial.print(Memory_04);
-    Serial.print("  ");
-    Serial.print("M_05 = ");
-    Serial.print(Memory_05);
-    Serial.print("  ");
-    Serial.print("M_06 = ");
-    Serial.print(Memory_06);
-    Serial.print("  ");
-    Serial.println("");
-  }
-}
-
-void Process()
-{
-  analogWrite(3, Memory_01.toInt());
-  analogWrite(5, Memory_02.toInt());
-  analogWrite(6, Memory_03.toInt());
-  analogWrite(9, Memory_04.toInt());
-  analogWrite(10, Memory_05.toInt());
-  analogWrite(11, Memory_06.toInt());
-}
-
 void Memorys_to_SET()
 {
   if (Memory_Number == "01" && Memory_Value.toInt() <= 255)
   {
     Correct_Command = true;
     Memory_01 = Memory_Value;
+    analogWrite(3, Memory_01.toInt());
   }
   if (Memory_Number == "02" && Memory_Value.toInt() <= 255)
   {
     Correct_Command = true;
     Memory_02 = Memory_Value;
+    analogWrite(5, Memory_02.toInt());
   }
   if (Memory_Number == "03" && Memory_Value.toInt() <= 255)
   {
     Correct_Command = true;
     Memory_03 = Memory_Value;
+    analogWrite(6, Memory_03.toInt());
   }
   if (Memory_Number == "04" && Memory_Value.toInt() <= 255)
   {
     Correct_Command = true;
     Memory_04 = Memory_Value;
+    analogWrite(9, Memory_04.toInt());
   }
   if (Memory_Number == "05" && Memory_Value.toInt() <= 255)
   {
     Correct_Command = true;
     Memory_05 = Memory_Value;
+    analogWrite(10, Memory_05.toInt());
   }
   if (Memory_Number == "06" && Memory_Value.toInt() <= 255)
   {
     Correct_Command = true;
     Memory_06 = Memory_Value;
+    analogWrite(11, Memory_06.toInt());
   }
 }
 
@@ -191,6 +142,32 @@ void RequestEvent()
   }
 }
 
+void Program_Monitor()
+{
+  if (Monitor_Program == true)
+  {
+    Serial.print("M_01 = ");
+    Serial.print(Memory_01);
+    Serial.print("  ");
+    Serial.print("M_02 = ");
+    Serial.print(Memory_02);
+    Serial.print("  ");
+    Serial.print("M_03 = ");
+    Serial.print(Memory_03);
+    Serial.print("  ");
+    Serial.print("M_04 = ");
+    Serial.print(Memory_04);
+    Serial.print("  ");
+    Serial.print("M_05 = ");
+    Serial.print(Memory_05);
+    Serial.print("  ");
+    Serial.print("M_06 = ");
+    Serial.print(Memory_06);
+    Serial.print("  ");
+    Serial.println("");
+  }
+}
+
 void setup()
 {
   Wire.begin(Module_Number);
@@ -217,5 +194,4 @@ void loop()
 {
   Monitor_Control();
   Program_Monitor();
-  Process();
 }

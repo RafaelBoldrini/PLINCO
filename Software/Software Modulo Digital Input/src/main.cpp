@@ -17,14 +17,17 @@ bool Correct_Command = false;
 String Memory_Number = "XX";
 String Memory_Value = "XXXX";
 
-String Memory_01 = "0000";
-String Memory_02 = "0000";
-String Memory_03 = "0000";
-String Memory_04 = "0000";
-String Memory_05 = "0000";
-String Memory_06 = "0000";
-String Memory_07 = "0000";
-String Memory_08 = "0000";
+unsigned long Timer_1_Control = 0;
+int Timer_1_Value = 0;
+
+String Memory_01 = "XXXX";
+String Memory_02 = "XXXX";
+String Memory_03 = "XXXX";
+String Memory_04 = "XXXX";
+String Memory_05 = "XXXX";
+String Memory_06 = "XXXX";
+String Memory_07 = "XXXX";
+String Memory_08 = "XXXX";
 
 String Value_Format(int Value)
 {
@@ -62,90 +65,54 @@ void Monitor_Control()
   }
 }
 
-void Program_Monitor()
-{
-  if (Monitor_Program == true)
-  {
-    Serial.print("M_01 = ");
-    Serial.print(Memory_01.toInt());
-    Serial.print("  ");
-    Serial.print("M_02 = ");
-    Serial.print(Memory_02.toInt());
-    Serial.print("  ");
-    Serial.print("M_03 = ");
-    Serial.print(Memory_03.toInt());
-    Serial.print("  ");
-    Serial.print("M_04 = ");
-    Serial.print(Memory_04.toInt());
-    Serial.print("  ");
-    Serial.print("M_05 = ");
-    Serial.print(Memory_05.toInt());
-    Serial.print("  ");
-    Serial.print("M_06 = ");
-    Serial.print(Memory_06.toInt());
-    Serial.print("  ");
-    Serial.print("M_07 = ");
-    Serial.print(Memory_07.toInt());
-    Serial.print("  ");
-    Serial.print("M_08 = ");
-    Serial.print(Memory_08.toInt());
-    Serial.print("  ");
-    Serial.println("");
-  }
-}
-
-void Process()
-{
-  Memory_01 = Value_Format(digitalRead(2));
-  Memory_02 = Value_Format(digitalRead(3));
-  Memory_03 = Value_Format(digitalRead(4));
-  Memory_04 = Value_Format(digitalRead(5));
-  Memory_05 = Value_Format(digitalRead(6));
-  Memory_06 = Value_Format(digitalRead(7));
-  Memory_07 = Value_Format(digitalRead(8));
-  Memory_08 = Value_Format(digitalRead(9));
-}
-
 void Memorys_to_GET()
 {
   if (Memory_Number == "01")
   {
     Correct_Command = true;
+    Memory_01 = Value_Format(digitalRead(2));
     Memory_Value = Memory_01;
   }
   if (Memory_Number == "02")
   {
     Correct_Command = true;
+    Memory_02 = Value_Format(digitalRead(3));
     Memory_Value = Memory_02;
   }
   if (Memory_Number == "03")
   {
     Correct_Command = true;
+    Memory_03 = Value_Format(digitalRead(4));
     Memory_Value = Memory_03;
   }
   if (Memory_Number == "04")
   {
     Correct_Command = true;
+    Memory_04 = Value_Format(digitalRead(5));
     Memory_Value = Memory_04;
   }
   if (Memory_Number == "05")
   {
     Correct_Command = true;
+    Memory_05 = Value_Format(digitalRead(6));
     Memory_Value = Memory_05;
   }
   if (Memory_Number == "06")
   {
     Correct_Command = true;
+    Memory_06 = Value_Format(digitalRead(7));
     Memory_Value = Memory_06;
   }
   if (Memory_Number == "07")
   {
     Correct_Command = true;
+    Memory_07 = Value_Format(digitalRead(8));
     Memory_Value = Memory_07;
   }
   if (Memory_Number == "08")
   {
     Correct_Command = true;
+    Memory_08 = Value_Format(digitalRead(9));
     Memory_Value = Memory_08;
   }
 }
@@ -207,6 +174,70 @@ void RequestEvent()
   }
 }
 
+void Timer_1_Set()
+{
+  unsigned long currentMillis = millis();
+  Timer_1_Control = currentMillis;
+  Timer_1_Value = 1;
+}
+
+void Timer_1(unsigned long Interval)
+{
+  unsigned long currentMillis = millis();
+  unsigned long Timer_Comparation = currentMillis - Timer_1_Control;
+  if (Timer_Comparation > Interval)
+  {
+    Timer_1_Value = 0;
+  }
+}
+
+void Program_Monitor()
+{
+  if (Monitor_Program == true)
+  {
+    Timer_1(1000);
+    if (Timer_1_Value == 0)
+    {
+      Memory_01 = Value_Format(digitalRead(2));
+      Memory_02 = Value_Format(digitalRead(3));
+      Memory_03 = Value_Format(digitalRead(4));
+      Memory_04 = Value_Format(digitalRead(5));
+      Memory_05 = Value_Format(digitalRead(6));
+      Memory_06 = Value_Format(digitalRead(7));
+      Memory_07 = Value_Format(digitalRead(8));
+      Memory_08 = Value_Format(digitalRead(9));
+
+      Timer_1_Set();
+    }
+
+    Serial.print("M_01 = ");
+    Serial.print(Memory_01.toInt());
+    Serial.print("  ");
+    Serial.print("M_02 = ");
+    Serial.print(Memory_02.toInt());
+    Serial.print("  ");
+    Serial.print("M_03 = ");
+    Serial.print(Memory_03.toInt());
+    Serial.print("  ");
+    Serial.print("M_04 = ");
+    Serial.print(Memory_04.toInt());
+    Serial.print("  ");
+    Serial.print("M_05 = ");
+    Serial.print(Memory_05.toInt());
+    Serial.print("  ");
+    Serial.print("M_06 = ");
+    Serial.print(Memory_06.toInt());
+    Serial.print("  ");
+    Serial.print("M_07 = ");
+    Serial.print(Memory_07.toInt());
+    Serial.print("  ");
+    Serial.print("M_08 = ");
+    Serial.print(Memory_08.toInt());
+    Serial.print("  ");
+    Serial.println("");
+  }
+}
+
 void setup()
 {
   Wire.begin(Module_Number);
@@ -229,5 +260,4 @@ void loop()
 {
   Monitor_Control();
   Program_Monitor();
-  Process();
 }
