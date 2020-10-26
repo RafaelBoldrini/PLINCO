@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 //
 //   ArduinoPLC - CPU
-//   Software for Arduino UNO
+//   Software for Arduino NANO
 //
 ////////////////////////////////////////////////////////////////////////
 
@@ -32,6 +32,9 @@ String Led_3 = "XXXX";
 String Potenciometro_1 = "XXXX";
 String Potenciometro_2 = "XXXX";
 String Sensor_Distancia_1 = "XXXX";
+String Input_RS485_1 = "XXXX";
+String Input_RS485_2 = "XXXX";
+String Input_RS485_3 = "XXXX";
 
 String Value_Format(int Value)
 {
@@ -193,6 +196,34 @@ void Memorys_of_RS485(int Module_Number, String Memory_Number, String Memory_Val
       Sensor_Distancia_1 = Memory_Value;
     }
   }
+
+  if (Module_Number == 2)
+  {
+    if (Memory_Number == "01")
+    {
+      if (Memory_Value == "XXXX")
+      {
+        Memory_Value = Input_RS485_1;
+      }
+      Input_RS485_1 = Memory_Value;
+    }
+    if (Memory_Number == "02")
+    {
+      if (Memory_Value == "XXXX")
+      {
+        Memory_Value = Input_RS485_2;
+      }
+      Input_RS485_2 = Memory_Value;
+    }
+    if (Memory_Number == "03")
+    {
+      if (Memory_Value == "XXXX")
+      {
+        Memory_Value = Input_RS485_3;
+      }
+      Input_RS485_3 = Memory_Value;
+    }
+  }
 }
 
 void RS485_Read()
@@ -346,6 +377,15 @@ void Program_Monitor()
     Serial.print("  ");
     Serial.print("Sensor 1 = ");
     Serial.print(Sensor_Distancia_1);
+    Serial.print("  ");
+    Serial.print("I_RS485 1 = ");
+    Serial.print(Input_RS485_1);
+    Serial.print("  ");
+    Serial.print("I_RS485 2 = ");
+    Serial.print(Input_RS485_2);
+    Serial.print("  ");
+    Serial.print("I_RS485 3 = ");
+    Serial.print(Input_RS485_3);
     Serial.print("  ");
     Serial.print("Led 3 = ");
     Serial.print(Led_3.toInt());

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 //
-//   ArduinoPLC - Slave RS485
-//   Software for Arduino NANO
+//   Converter RS485
+//   Software for Arduino UNO
 //
 ////////////////////////////////////////////////////////////////////////
 
@@ -22,7 +22,7 @@ int Timer_1_Value = 0;
 
 String Memory_01 = "XXXX";
 
-#include <Wire.h>
+#include <Wire.h> 
 #include <VL53L0X.h>
 VL53L0X VL53L0X_1;
 
@@ -111,7 +111,7 @@ void Process()
       Memory_01 = "XXXX";
     }
 
-    RS485_Write(1, "01", Memory_01);
+    RS485_Write(Module_Number, "01", Memory_01);
     Timer_1_Set();
   }
 }

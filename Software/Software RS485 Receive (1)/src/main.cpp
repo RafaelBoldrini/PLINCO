@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 //
-//   ArduinoPLC - Slave RS485
-//   Software for Arduino NANO
+//   Converter RS485
+//   Software for Arduino UNO
 //
 ////////////////////////////////////////////////////////////////////////
 
@@ -16,11 +16,6 @@ SoftwareSerial RS485_Receive(RS485_R_RO_Pin, RS485_R_DI_Pin);
 
 bool Monitor_Program = false;
 bool Monitor_Protocol = false;
-
-bool Correct_Command = false;
-String Command_Type = "/XXX.";
-String Memory_Number = "XX";
-String Memory_Value = "XXXX";
 
 unsigned long Timer_1_Control = 0;
 int Timer_1_Value = 0;

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////////////////
 //
-//   ArduinoPLC - CPU
-//   Software for Arduino MEGA
+//   ArduinoPLC - Module of Modbus TCP IP
+//   Software for Arduino UNO
 //
 ////////////////////////////////////////////////////////////////////////
 
@@ -71,25 +71,6 @@ void Monitor_Control()
     {
       Monitor_Protocol = !Monitor_Protocol;
     }
-  }
-}
-
-void Program_Monitor()
-{
-  if (Monitor_Program == true)
-  {
-    Serial.print("M_01 = ");
-    Serial.print(Memory_01);
-    Serial.print("  ");
-    Serial.print("M_02 = ");
-    Serial.print(Memory_02);
-    Serial.print("  ");
-    Serial.print("M_03 = ");
-    Serial.print(Memory_03);
-    Serial.print("  ");
-    Serial.print("M_04 = ");
-    Serial.print(Memory_04);
-    Serial.println("");
   }
 }
 
@@ -229,6 +210,25 @@ void RequestEvent()
   {
     Serial.print("Sent: ");
     Serial.println(Info_to_Send);
+  }
+}
+
+void Program_Monitor()
+{
+  if (Monitor_Program == true)
+  {
+    Serial.print("M_01 = ");
+    Serial.print(Memory_01);
+    Serial.print("  ");
+    Serial.print("M_02 = ");
+    Serial.print(Memory_02);
+    Serial.print("  ");
+    Serial.print("M_03 = ");
+    Serial.print(Memory_03);
+    Serial.print("  ");
+    Serial.print("M_04 = ");
+    Serial.print(Memory_04);
+    Serial.println("");
   }
 }
 
