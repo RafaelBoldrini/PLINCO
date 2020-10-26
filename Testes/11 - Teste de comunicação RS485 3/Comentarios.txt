@@ -1,0 +1,1 @@
+A CPU controla o I2C e o RS485. é importante lembrar que pelops testes, foi constatado que é necessario retirar os resistores terminadores dos modulos Max485 que estão no meio da comuinicação. Colocar resistores entre o "A" e o "B" na frente do modulo Max485 não parece ser efetivo.
